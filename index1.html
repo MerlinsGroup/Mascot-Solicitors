@@ -43,7 +43,7 @@
     transition:transform .6s var(--ease);
     transform-origin:center center;
   }
-  body.interview .content-inner{transform:scale(.82);}
+  body.interview .content-inner{transform:scale(.84);}
 
   /* ---------- Logo ---------- */
   .logo{
@@ -51,7 +51,7 @@
     font-weight:400;
     letter-spacing:2px;
     line-height:1;
-    margin-bottom:0.1em;
+    margin-bottom:0.18em;
   }
 
   /* ---------- Services ---------- */
@@ -60,19 +60,21 @@
     text-transform:uppercase;
     letter-spacing:4px;
     opacity:0.82;
-    margin-bottom:0.7em;
+    margin-bottom:1em;
   }
-  /* Vertical, evenly-spaced list — each service stacked on its own line,
-     bullets aligned down the left edge. */
+  /* Two columns x three rows — fills the LEFT column first, then the RIGHT.
+     Generously spaced so it's easy to read, bullets aligned per column. */
   .services{
     list-style:none;
-    display:inline-flex;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:clamp(6px,1vh,13px);
+    display:grid;
+    grid-auto-flow:column;
+    grid-template-rows:repeat(3,auto);
+    justify-content:center;
+    column-gap:clamp(36px,6vw,120px);
+    row-gap:clamp(12px,2.1vh,28px);
     text-align:left;
-    line-height:1.1;
-    font-size:clamp(19px,2.3vw,33px);
+    line-height:1.15;
+    font-size:clamp(20px,2.5vw,38px);
   }
   .services li{
     position:relative;
@@ -81,7 +83,7 @@
   .services li::before{
     content:"";
     position:absolute;
-    left:0;top:.5em;
+    left:0;top:.52em;
     width:.34em;height:.34em;
     border-radius:50%;
     background:#fff;
@@ -90,24 +92,24 @@
 
   /* ---------- Divider ---------- */
   .divider{
-    width:min(440px,55%);
+    width:min(520px,62%);
     height:1px;
     background:rgba(255,255,255,.35);
-    margin:clamp(14px,2.4vh,30px) 0;
+    margin:clamp(20px,3.2vh,44px) 0;
   }
 
   /* ---------- Contact details (with icons) ---------- */
   .contacts{
     display:flex;flex-direction:column;
     align-items:center;
-    gap:clamp(8px,1.4vh,18px);
-    font-size:clamp(16px,1.9vw,28px);
+    gap:clamp(12px,1.9vh,24px);
+    font-size:clamp(17px,2vw,30px);
     letter-spacing:.5px;
   }
   .c-row{
     display:flex;flex-wrap:wrap;
     justify-content:center;align-items:center;
-    gap:clamp(14px,2.6vw,46px);
+    gap:clamp(20px,3.2vw,60px);
   }
   .c-item{
     display:inline-flex;
