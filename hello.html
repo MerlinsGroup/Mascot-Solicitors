@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mascot Solicitors — Screen Display</title>
+<style>
+  :root{
+    --red:#e2241a;
+    --dark:#1a1a1a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;font-family:Georgia,'Times New Roman',serif;background:#000;overflow:hidden;}
+
+  .screen{
+    position:relative;
+    width:100vw;height:100vh;
+    background:var(--red);
+    color:#fff;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    text-align:center;
+  }
+
+  /* ---------- Logo ---------- */
+  .logo{
+    font-size:clamp(60px,13vw,220px);
+    font-weight:400;
+    letter-spacing:2px;
+    line-height:1;
+    margin-bottom:0.25em;
+  }
+
+  /* ---------- Phone ---------- */
+  .phone{
+    font-size:clamp(24px,4vw,54px);
+    letter-spacing:1px;
+    margin-bottom:0.6em;
+  }
+  .phone span{font-weight:bold;}
+
+  /* ---------- Services ---------- */
+  .services-title{
+    font-size:clamp(16px,2vw,28px);
+    text-transform:uppercase;
+    letter-spacing:3px;
+    opacity:0.85;
+    margin-bottom:0.6em;
+  }
+  .services{
+    display:flex;flex-wrap:wrap;
+    justify-content:center;
+    gap:0.4em 1.4em;
+    max-width:85%;
+    font-size:clamp(18px,2.6vw,38px);
+  }
+  .services li{list-style:none;}
+  .services li::after{content:" •";opacity:0.5;}
+  .services li:last-child::after{content:"";}
+
+  .website{
+    margin-top:1em;
+    font-size:clamp(16px,2vw,30px);
+    opacity:0.9;
+    letter-spacing:1px;
+  }
+
+  /* ---------- Bottom strip ("Please go here") ---------- */
+  .strip{
+    position:absolute;
+    bottom:0;left:0;right:0;
+    background:#fff;
+    color:var(--red);
+    padding:0.5em 0;
+    transform:translateY(100%);
+    transition:transform .5s ease;
+    box-shadow:0 -6px 24px rgba(0,0,0,.3);
+  }
+  .strip .strip-main{
+    font-size:clamp(28px,5vw,70px);
+    font-weight:bold;
+    letter-spacing:2px;
+    text-transform:uppercase;
+  }
+  .strip .strip-sub{
+    font-size:clamp(16px,2.4vw,34px);
+    margin-top:.15em;
+    letter-spacing:1px;
+  }
+  .strip .strip-sub span{font-weight:bold;}
+  .strip .arrow{
+    display:inline-block;
+    margin-left:.3em;
+    animation:bob 1s infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
+
+  /* When interview is active, slide the strip up */
+  body.interview .strip{transform:translateY(0);}
+  body.interview .screen{padding-bottom:1.5em;}
+
+  /* ---------- Control button (hidden in fullscreen presentation) ---------- */
+  .control{
+    position:absolute;
+    top:18px;right:18px;
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.4);
+    color:#fff;
+    font-family:Arial,sans-serif;
+    font-size:14px;
+    padding:8px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    z-index:10;
+  }
+  .control:hover{background:rgba(255,255,255,.3);}
+</style>
+</head>
+<body>
+  <div class="screen">
+
+    <button class="control" onclick="document.body.classList.toggle('interview')">
+      Toggle "Please go here"
+    </button>
+
+    <div class="logo">mascot</div>
+
+    <div class="phone">Call us on <span>020 8075 2860</span></div>
+
+    <div class="services-title">Services We Provide</div>
+    <ul class="services">
+      <li>Corporate Legal Advice</li>
+      <li>Family Law</li>
+      <li>Immigration</li>
+      <li>Landlords &amp; Tenants</li>
+      <li>Wills &amp; Probate</li>
+      <li>Litigation</li>
+    </ul>
+
+    <div class="website">mascotsolicitors.co.uk</div>
+
+    <!-- Bottom strip that appears when interview starts -->
+    <div class="strip">
+      <div class="strip-main">Please Go Here <span class="arrow">→</span></div>
+      <div class="strip-sub">Call <span>020 8075 2860</span> &nbsp;|&nbsp; mascotsolicitors.co.uk</div>
+    </div>
+
+  </div>
+
+<script>
+  // Press the SPACEBAR or click the button to show/hide the "Please go here" strip
+  document.addEventListener('keydown', function(e){
+    if(e.code === 'Space'){
+      e.preventDefault();
+      document.body.classList.toggle('interview');
+    }
+    // Press F for fullscreen
+    if(e.key.toLowerCase() === 'f'){
+      if(!document.fullscreenElement){ document.documentElement.requestFullscreen(); }
+      else { document.exitFullscreen(); }
+    }
+  });
+</script>
+</body>
+</html>
