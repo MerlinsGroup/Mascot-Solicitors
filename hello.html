@@ -8,6 +8,7 @@
   :root{
     --red:#e2241a;
     --dark:#1a1a1a;
+    --ease:cubic-bezier(.16,1,.3,1);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html,body{height:100%;font-family:Georgia,'Times New Roman',serif;background:#000;overflow:hidden;}
@@ -18,86 +19,177 @@
     background:var(--red);
     color:#fff;
     display:flex;flex-direction:column;
-    align-items:center;justify-content:center;
-    text-align:center;
+    overflow:hidden;
   }
+
+  /* ---------- Centered content column ---------- */
+  /* flex:1 + min-height:0 + overflow:hidden lets this shrink so the strip
+     below it always has room — the content can never cover/overlap. */
+  .content{
+    flex:1 1 0;
+    min-height:0;
+    display:flex;
+    align-items:center;justify-content:center;
+    width:100%;
+    padding:clamp(14px,2.6vh,36px) 4vw;
+    overflow:hidden;
+  }
+  /* The inner block scales down when the strip opens, so the whole layout
+     stays visible and balanced above it (no clipping, no overlap). */
+  .content-inner{
+    display:flex;flex-direction:column;
+    align-items:center;
+    text-align:center;
+    transition:transform .6s var(--ease);
+    transform-origin:center center;
+  }
+  body.interview .content-inner{transform:scale(.82);}
 
   /* ---------- Logo ---------- */
   .logo{
-    font-size:clamp(60px,13vw,220px);
+    font-size:clamp(56px,11vw,180px);
     font-weight:400;
     letter-spacing:2px;
     line-height:1;
-    margin-bottom:0.25em;
+    margin-bottom:0.1em;
   }
-
-  /* ---------- Phone ---------- */
-  .phone{
-    font-size:clamp(24px,4vw,54px);
-    letter-spacing:1px;
-    margin-bottom:0.6em;
-  }
-  .phone span{font-weight:bold;}
 
   /* ---------- Services ---------- */
   .services-title{
-    font-size:clamp(16px,2vw,28px);
+    font-size:clamp(15px,1.7vw,26px);
     text-transform:uppercase;
-    letter-spacing:3px;
-    opacity:0.85;
-    margin-bottom:0.6em;
+    letter-spacing:4px;
+    opacity:0.82;
+    margin-bottom:0.7em;
   }
+  /* Vertical, evenly-spaced list — each service stacked on its own line,
+     bullets aligned down the left edge. */
   .services{
-    display:flex;flex-wrap:wrap;
-    justify-content:center;
-    gap:0.4em 1.4em;
-    max-width:85%;
-    font-size:clamp(18px,2.6vw,38px);
+    list-style:none;
+    display:inline-flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:clamp(6px,1vh,13px);
+    text-align:left;
+    line-height:1.1;
+    font-size:clamp(19px,2.3vw,33px);
   }
-  .services li{list-style:none;}
-  .services li::after{content:" •";opacity:0.5;}
-  .services li:last-child::after{content:"";}
+  .services li{
+    position:relative;
+    padding-left:1.5em;
+  }
+  .services li::before{
+    content:"";
+    position:absolute;
+    left:0;top:.5em;
+    width:.34em;height:.34em;
+    border-radius:50%;
+    background:#fff;
+    opacity:.6;
+  }
 
-  .website{
-    margin-top:1em;
-    font-size:clamp(16px,2vw,30px);
-    opacity:0.9;
-    letter-spacing:1px;
+  /* ---------- Divider ---------- */
+  .divider{
+    width:min(440px,55%);
+    height:1px;
+    background:rgba(255,255,255,.35);
+    margin:clamp(14px,2.4vh,30px) 0;
   }
+
+  /* ---------- Contact details (with icons) ---------- */
+  .contacts{
+    display:flex;flex-direction:column;
+    align-items:center;
+    gap:clamp(8px,1.4vh,18px);
+    font-size:clamp(16px,1.9vw,28px);
+    letter-spacing:.5px;
+  }
+  .c-row{
+    display:flex;flex-wrap:wrap;
+    justify-content:center;align-items:center;
+    gap:clamp(14px,2.6vw,46px);
+  }
+  .c-item{
+    display:inline-flex;
+    align-items:center;
+    gap:.55em;
+    white-space:nowrap;
+  }
+  .c-item.addr{white-space:normal;max-width:92vw;text-align:center;line-height:1.3;}
+  .c-label{opacity:.7;font-style:italic;margin-right:-.2em;}
+
+  /* Inline icons inherit text colour & size */
+  .ico{
+    width:1em;height:1em;
+    flex:0 0 auto;
+    fill:currentColor;
+    display:block;
+  }
+  .c-item .ico{opacity:.92;}
 
   /* ---------- Bottom strip ("Please go here") ---------- */
+  /* Accordion reveal: the wrap animates from 0fr -> 1fr, growing to the
+     panel's natural height and pushing the content above it up. */
+  .strip-wrap{
+    flex:0 0 auto;
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .6s var(--ease),box-shadow .6s var(--ease);
+    box-shadow:0 0 0 rgba(0,0,0,0);
+  }
+  body.interview .strip-wrap{
+    grid-template-rows:1fr;
+    box-shadow:0 -8px 40px rgba(0,0,0,.28);
+  }
+
   .strip{
-    position:absolute;
-    bottom:0;left:0;right:0;
+    overflow:hidden;      /* required for the 0fr collapse */
+    min-height:0;
+  }
+  /* One centred row:  PLEASE GO HERE  ->  phone  ->  website  */
+  .strip-inner{
     background:#fff;
     color:var(--red);
-    padding:0.5em 0;
-    transform:translateY(100%);
-    transition:transform .5s ease;
-    box-shadow:0 -6px 24px rgba(0,0,0,.3);
+    padding:clamp(18px,2.8vh,40px) 5vw;
+    border-top:4px solid var(--red);
+    display:flex;flex-wrap:wrap;
+    align-items:center;justify-content:center;
+    gap:clamp(10px,1.5vw,28px);
   }
-  .strip .strip-main{
-    font-size:clamp(28px,5vw,70px);
+  .sg-main{
+    font-size:clamp(24px,3.2vw,52px);
     font-weight:bold;
     letter-spacing:2px;
     text-transform:uppercase;
+    line-height:1.05;
   }
-  .strip .strip-sub{
-    font-size:clamp(16px,2.4vw,34px);
-    margin-top:.15em;
+  .sg-item{
+    display:inline-flex;
+    align-items:center;
+    gap:.4em;
+    font-size:clamp(18px,2.2vw,36px);
     letter-spacing:1px;
+    line-height:1.05;
   }
-  .strip .strip-sub span{font-weight:bold;}
-  .strip .arrow{
+  .sg-item.tel{font-weight:bold;}
+  .arrow{
+    font-size:clamp(20px,2.4vw,42px);
     display:inline-block;
-    margin-left:.3em;
-    animation:bob 1s infinite;
+    animation:nudge 1.4s ease-in-out infinite;
   }
-  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
+  @keyframes nudge{0%,100%{transform:translateX(0);}50%{transform:translateX(10px);}}
 
-  /* When interview is active, slide the strip up */
-  body.interview .strip{transform:translateY(0);}
-  body.interview .screen{padding-bottom:1.5em;}
+  /* Reveal: each piece fades in, staggered left-to-right */
+  .strip-inner > *{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .5s ease,transform .5s var(--ease);
+  }
+  body.interview .strip-inner > *{opacity:1;transform:none;}
+  body.interview .strip-inner > *:nth-child(2){transition-delay:.08s;}
+  body.interview .strip-inner > *:nth-child(3){transition-delay:.16s;}
+  body.interview .strip-inner > *:nth-child(4){transition-delay:.24s;}
+  body.interview .strip-inner > *:nth-child(5){transition-delay:.32s;}
 
   /* ---------- Control button (hidden in fullscreen presentation) ---------- */
   .control{
@@ -117,32 +209,75 @@
 </style>
 </head>
 <body>
+
+  <!-- Reusable icon set (drawn once, referenced via <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ic-phone" viewBox="0 0 24 24">
+      <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24 11.36 11.36 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.57 1 1 0 0 1-.24 1.02l-2.2 2.2z"/>
+    </symbol>
+    <symbol id="ic-mobile" viewBox="0 0 24 24">
+      <path d="M17 1H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm-5 21a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zM17 18H7V4h10v14z"/>
+    </symbol>
+    <symbol id="ic-whatsapp" viewBox="0 0 24 24">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.13h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.69 8.23-8.23 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.8-.23-.09-.39-.12-.56.12-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/>
+    </symbol>
+    <symbol id="ic-globe" viewBox="0 0 24 24">
+      <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.93 6h-2.95a15.6 15.6 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a7.96 7.96 0 0 1 0-4h3.38a16.6 16.6 0 0 0 0 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 0 1 5.07 16zm2.95-8H5.07a8.03 8.03 0 0 1 4.33-3.56A15.6 15.6 0 0 0 8.02 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66a14.7 14.7 0 0 1 0-4h4.68a14.7 14.7 0 0 1 0 4zm.26 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56zM16.36 14a16.6 16.6 0 0 0 0-4h3.38a7.96 7.96 0 0 1 0 4h-3.38z"/>
+    </symbol>
+    <symbol id="ic-pin" viewBox="0 0 24 24">
+      <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+    </symbol>
+  </svg>
+
   <div class="screen">
 
     <button class="control" onclick="document.body.classList.toggle('interview')">
       Toggle "Please go here"
     </button>
 
-    <div class="logo">mascot</div>
+    <div class="content">
+      <div class="content-inner">
+        <div class="logo">mascot</div>
 
-    <div class="phone">Call us on <span>020 8075 2860</span></div>
+        <div class="services-title">Services We Provide</div>
+        <ul class="services">
+          <li>Immigration &amp; Nationality</li>
+          <li>Family</li>
+          <li>Wills &amp; Probate</li>
+          <li>Landlord &amp; Tenant</li>
+          <li>Litigation</li>
+          <li>Commercial &amp; Corporate Services</li>
+        </ul>
 
-    <div class="services-title">Services We Provide</div>
-    <ul class="services">
-      <li>Corporate Legal Advice</li>
-      <li>Family Law</li>
-      <li>Immigration</li>
-      <li>Landlords &amp; Tenants</li>
-      <li>Wills &amp; Probate</li>
-      <li>Litigation</li>
-    </ul>
+        <div class="divider"></div>
 
-    <div class="website">mascotsolicitors.co.uk</div>
+        <div class="contacts">
+          <div class="c-row">
+            <span class="c-item"><svg class="ico"><use href="#ic-phone"/></svg>+44 2080 752 860</span>
+            <span class="c-item"><svg class="ico"><use href="#ic-mobile"/></svg>07741 535063</span>
+            <span class="c-item"><svg class="ico"><use href="#ic-whatsapp"/></svg>07741 535063</span>
+          </div>
+          <div class="c-row">
+            <span class="c-item"><svg class="ico"><use href="#ic-globe"/></svg>www.mascotsolicitors.co.uk</span>
+          </div>
+          <div class="c-row">
+            <span class="c-item addr"><svg class="ico"><use href="#ic-pin"/></svg>Suite 45, The Wenta, 1 Electric Avenue, Enfield, Middlesex EN3 7XU</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Bottom strip that appears when interview starts -->
-    <div class="strip">
-      <div class="strip-main">Please Go Here <span class="arrow">→</span></div>
-      <div class="strip-sub">Call <span>020 8075 2860</span> &nbsp;|&nbsp; mascotsolicitors.co.uk</div>
+    <div class="strip-wrap">
+      <div class="strip">
+        <div class="strip-inner">
+          <span class="sg-main">Please Go Here</span>
+          <span class="arrow">→</span>
+          <span class="sg-item tel"><svg class="ico"><use href="#ic-phone"/></svg>+44 2080 752 860</span>
+          <span class="arrow">→</span>
+          <span class="sg-item web"><svg class="ico"><use href="#ic-globe"/></svg>www.mascotsolicitors.co.uk</span>
+        </div>
+      </div>
     </div>
 
   </div>
