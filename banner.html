@@ -1,0 +1,137 @@
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700;800&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{ --red:#DC0000; --red-d:#a90000; --ink:#101012; --white:#ffffff; --mute:#b9b9bf; }
+  @page{ size:1920px 520px; margin:0; }
+  html,body{ background:#222; overflow:hidden; }
+  body{ display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px; font-family:'Inter',sans-serif; }
+
+  .banner{
+    width:1920px; height:520px;
+    background:var(--ink);
+    display:grid;
+    grid-template-columns:1.1fr 1fr 1.1fr;
+    align-items:stretch;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 24px 70px rgba(0,0,0,.5);
+    transform-origin:center center;   /* scaled by JS to fit the window */
+  }
+  .banner::before, .banner::after{
+    content:""; position:absolute; left:0; right:0; height:6px; z-index:5;
+    background:var(--red);
+  }
+  .banner::before{ top:0; }
+  .banner::after{ bottom:0; }
+
+  /* LEFT : contact */
+  .contact{ padding:34px 34px 34px 58px; display:flex; flex-direction:column; justify-content:center; gap:13px; }
+  .row{ display:flex; align-items:center; gap:18px; }
+  .ic{ flex:0 0 48px; width:48px; height:48px; border-radius:13px; background:var(--red); display:grid; place-items:center; }
+  .ic svg{ width:25px; height:25px; }
+  .tx .l{ font-size:13px; letter-spacing:.22em; text-transform:uppercase; color:var(--mute); font-weight:700; margin-bottom:3px; }
+  .tx .v{ font-size:24px; font-weight:700; color:var(--white); line-height:1.2; }
+  .tx .v small{ font-size:18px; font-weight:500; color:var(--mute); }
+
+  /* CENTER : brand — wide red band skewed through the centre, behind the wordmark */
+  .brand{ background:var(--ink); display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+  .brand .band{ position:absolute; top:-60px; bottom:-60px; left:50%; width:135%;
+    background:var(--red); transform:translateX(-50%) skewX(-12deg); z-index:1; }
+  .mark{ position:relative; z-index:2; }
+  .mark img{ display:block; width:84%; max-width:480px; height:auto; margin:0 auto; }
+  .tagline{ margin-top:14px; position:relative; z-index:2; display:flex; align-items:center; justify-content:center; gap:14px; }
+  .tagline i{ height:2px; width:38px; background:rgba(255,255,255,.65); }
+  .tagline span{ font-size:18px; font-weight:600; letter-spacing:.5em; padding-left:.5em; color:var(--white); text-transform:uppercase; }
+
+  /* RIGHT : services */
+  .services{ padding:54px 64px 54px 70px; display:flex; flex-direction:column; justify-content:center; }
+  .services .eyebrow{ font-size:13px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--mute); margin-bottom:20px; }
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px 30px; }
+  .serv{ display:flex; align-items:center; gap:12px; color:var(--white); font-size:20px; font-weight:600; white-space:nowrap; }
+  .serv::before{ content:""; width:9px; height:9px; flex:0 0 9px; background:var(--red); transform:rotate(45deg); }
+
+  /* Download button */
+  .dl{
+    position:fixed; top:16px; right:16px; z-index:1000;
+    font-family:'Inter',Arial,sans-serif; font-size:14px; font-weight:700;
+    letter-spacing:.02em; padding:11px 20px; border:none; border-radius:8px;
+    background:var(--red); color:#fff; cursor:pointer;
+    box-shadow:0 6px 18px rgba(0,0,0,.35);
+  }
+  .dl:hover{ filter:brightness(1.08); }
+
+  @media print{
+    @page{ size:1920px 520px; margin:0; }
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    html,body{ background:#fff; overflow:visible; }
+    body{ padding:0; display:block; }
+    .banner{ box-shadow:none; transform:none !important; }
+    .dl{ display:none !important; }
+  }
+</style>
+
+<button class="dl" onclick="window.print()">Download as PDF</button>
+
+<div class="banner">
+
+  <div class="contact">
+    <div class="row">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" fill="#fff"/><circle cx="12" cy="9" r="2.4" fill="#DC0000"/></svg></div>
+      <div class="tx"><div class="l">Visit Us</div><div class="v">Suite 45, The Wenta Business Centre, 1 Electric Avenue<br><small>Enfield, Middlesex, EN3 7XU</small></div></div>
+    </div>
+    <div class="row">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M6 3c-1 0-2 1-2 2 0 9 7 16 16 16 1 0 2-1 2-2v-3c0-1-1-2-2-2l-3 1c-2-1-4-3-5-5l1-3c0-1-1-2-2-2H6z" fill="#fff"/></svg></div>
+      <div class="tx"><div class="l">Tel</div><div class="v">+44 2080 752 860</div></div>
+    </div>
+    <div class="row">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="7" y="2.4" width="10" height="19.2" rx="2.4" fill="#fff"/><rect x="8.7" y="5" width="6.6" height="11.6" fill="#DC0000"/><circle cx="12" cy="19.1" r=".95" fill="#DC0000"/></svg></div>
+      <div class="tx"><div class="l">Mobile</div><div class="v">+44 7741 535063</div></div>
+    </div>
+    <div class="row">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.13h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.69 8.23-8.23 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.8-.23-.09-.39-.12-.56.12-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg></div>
+      <div class="tx"><div class="l">WhatsApp</div><div class="v">+44 7741 535063</div></div>
+    </div>
+    <div class="row">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="#fff"/><path d="M4 7l8 5 8-5" stroke="#DC0000" stroke-width="1.8" fill="none"/></svg></div>
+      <div class="tx"><div class="l">Email</div><div class="v">info@mascotsolicitors.co.uk</div></div>
+    </div>
+    <div class="row">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.2" fill="#fff"/><path d="M3 12h18M12 3c2.6 2.4 2.6 15 0 18M12 3c-2.6 2.4-2.6 15 0 18" stroke="#DC0000" stroke-width="1.5" fill="none"/></svg></div>
+      <div class="tx"><div class="l">Website</div><div class="v">www.mascotsolicitors.co.uk</div></div>
+    </div>
+  </div>
+
+  <div class="brand">
+    <div class="band"></div>
+    <div class="mark"><img src="mascot-white.png" alt="mascot"></div>
+    <div class="tagline"><i></i><span>Solicitors</span><i></i></div>
+  </div>
+
+  <div class="services">
+    <div class="eyebrow">Our Practice Areas</div>
+    <div class="grid">
+      <div class="serv">Immigration &amp; Nationality</div>
+      <div class="serv">Family</div>
+      <div class="serv">Wills &amp; Probate</div>
+      <div class="serv">Landlord &amp; Tenant</div>
+      <div class="serv">Litigation</div>
+      <div class="serv">Commercial &amp; Corporate</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Scale the fixed 1920x520 banner down to fit any window so it always shows fully.
+  var banner = document.querySelector('.banner');
+  function fit(){
+    var s = Math.min(1, (window.innerWidth - 40) / 1920, (window.innerHeight - 40) / 520);
+    banner.style.transform = 'scale(' + s + ')';
+  }
+  fit();
+  window.addEventListener('resize', fit);
+  // Print at full size, then restore the on-screen scale.
+  window.addEventListener('beforeprint', function(){ banner.style.transform = 'none'; });
+  window.addEventListener('afterprint', fit);
+</script>
